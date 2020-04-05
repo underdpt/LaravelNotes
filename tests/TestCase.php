@@ -1,7 +1,11 @@
-<?php namespace Arcanedev\LaravelNotes\Tests;
+<?php
 
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelNotes\Tests;
+
+use Arcanedev\LaravelNotes\Tests\Stubs\Models\User;
 use Orchestra\Testbench\TestCase as BaseTestCase;
-use Illuminate\Database\Eloquent\Factory as ModelFactory;
 
 /**
  * Class     TestCase
@@ -29,7 +33,7 @@ abstract class TestCase extends BaseTestCase
         parent::setUp();
 
         $this->migrate();
-        $this->loadFactories();
+        $this->withFactories(__DIR__.'/fixtures/factories');
     }
 
     /**
@@ -39,7 +43,7 @@ abstract class TestCase extends BaseTestCase
      *
      * @return array
      */
-    protected function getPackageProviders($app)
+    protected function getPackageProviders($app): array
     {
         return [
             \Arcanedev\LaravelNotes\LaravelNotesServiceProvider::class,
@@ -51,13 +55,13 @@ abstract class TestCase extends BaseTestCase
      *
      * @param  \Illuminate\Foundation\Application   $app
      */
-    protected function getEnvironmentSetUp($app)
+    protected function getEnvironmentSetUp($app): void
     {
         // Laravel App Configs
-        $app['config']->set('auth.model', Stubs\Models\User::class);
+        $app['config']->set('auth.model', User::class);
 
         // Laravel Messenger Configs
-        $app['config']->set('notes.authors.model', Stubs\Models\User::class);
+        $app['config']->set('notes.authors.model', User::class);
     }
 
     /* -----------------------------------------------------------------
@@ -68,7 +72,7 @@ abstract class TestCase extends BaseTestCase
     /**
      * Migrate the tables.
      */
-    protected function migrate()
+    protected function migrate(): void
     {
         $migrations = array_map('realpath', [
             __DIR__.'/../database/migrations',
@@ -78,14 +82,5 @@ abstract class TestCase extends BaseTestCase
         foreach ($migrations as $path) {
             $this->loadMigrationsFrom($path);
         }
-    }
-
-    /**
-     * Load Model Factories.
-     */
-    private function loadFactories()
-    {
-        $this->factory = $this->app->make(ModelFactory::class);
-        $this->factory->load(__DIR__.'/fixtures/factories');
     }
 }

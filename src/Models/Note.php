@@ -1,4 +1,11 @@
-<?php namespace Arcanedev\LaravelNotes\Models;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelNotes\Models;
+
+use Arcanedev\Support\Database\PrefixedModel;
+use Illuminate\Support\Arr;
 
 /**
  * Class     Note
@@ -18,7 +25,7 @@
  * @property  \Illuminate\Database\Eloquent\Model  author
  * @property  \Illuminate\Database\Eloquent\Model  noteable
  */
-class Note extends AbstractModel
+class Note extends PrefixedModel
 {
     /* -----------------------------------------------------------------
      |  Properties
@@ -71,7 +78,11 @@ class Note extends AbstractModel
     {
         parent::__construct($attributes);
 
-        $this->setTable(config('notes.notes.table', 'notes'));
+        $config = config('notes.database', []);
+
+        $this->setConnection(Arr::get($config, 'connection'));
+        $this->setPrefix(Arr::get($config, 'prefix'));
+        $this->setTable(Arr::get($config, 'table', 'notes'));
     }
 
     /* -----------------------------------------------------------------
