@@ -1,6 +1,6 @@
 <?php
 
-use Arcanedev\LaravelNotes\Bases\Migration;
+use Arcanedev\LaravelNotes\Database\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
 /**
