@@ -35,7 +35,7 @@ class AddTitlesToNotes extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
         Schema::table($this->getTableName(), function (Blueprint $table) {
             $table->string('title')->nullable()->default(null)->after('id');
@@ -45,7 +45,7 @@ class AddTitlesToNotes extends Migration
     /**
      * Roll back the migrations
      */
-    public function down()
+    public function down(): void
     {
         Schema::table($this->getTableName(), function (Blueprint $table) {
             $table->dropColumn('title');
