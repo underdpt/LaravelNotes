@@ -41,6 +41,7 @@ class CreateNotesTable extends Migration
     {
         $this->createSchema(function (Blueprint $table) {
             $table->increments('id');
+            $table->string('title')->nullable()->default(null);
             $table->text('content');
             $table->morphs('noteable');
             $table->unsignedBigInteger('author_id')->nullable();
